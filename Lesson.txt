@@ -1,0 +1,48 @@
+
+
+import numpy as np # data manipulation library
+from sklearn.linear_model import LinearRegression
+import pandas as pd # data manipulation library
+import seaborn as sns # data visualization lib
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+
+
+
+
+
+#data loading / implementation
+data = pd.read_csv("USA_Housing .csv")
+data.head()
+data.info()
+statistics = data.describe()
+cols = data.columns
+
+#data exploration
+sns.pairplot(data) # visual observation
+sns.heatmap(data.corr(), annot=True)
+
+# data splittin (X, y)/  preparation
+X = data[[cols[0], cols[1], cols[2], cols[3], cols[4]]]
+y = data['Price']
+
+#training/validation split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+
+#model building (training process)
+lin_reg = LinearRegression (normalize = True)
+lin_reg.fit(X_train, y_train) #training line / model building line
+betta0 = lin_reg.intercept_
+coefficients = lin_reg.coef_
+
+
+#estimation of the productivity of the model / evaluation of the model
+
+prediction = lin_reg.predict(X_test)
+
+plt.plot(prediction, y_test, 'o')
+plt.xlabel('Predcition')
+plt.ylabel('Real')
+
+
